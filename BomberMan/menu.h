@@ -262,6 +262,24 @@ int currentSetting = 0;
 const String aboutText = "Game name: BomberMan | Made by Antonia Oancea | GitHub : github.com/AntoniaOancea";
 const String howToPlay = "To win you have to destroy the walls placing bombs on the map pressing the joystick and get out of its way. You can pause the game pressing the black button!";
 
+int currentPlayer = 0;
+const int nrOfPLayers = 3; 
+
+
+int score[3] = {EEPROM.read(4), EEPROM.read(5), EEPROM.read(6)};
+char name[3][3] = {EEPROM.read(7), EEPROM.read(8), EEPROM.read(9)};
+//int score[3] = {255, 255, 255};
+//char name[5][3] = {"NaN", "NaN", "NaN"}; 
+bool update = false; 
+
+int currentLetter = 0;
+char nameCurrent[3] = "AAA";
+
+const int timeBlink = 50;
+long long lastBlink;
+int stateBlink = true;
+
+
 void moveMenu()
 {
   xValue = analogRead(joystickX); // Read the X-axis value
@@ -406,9 +424,6 @@ void settingsMenu(){ // move trough settings submenu and update values on joysti
   moveSetting();
 }
 
-int currentPlayer = 0;
-const int nrOfPLayers = 3; 
-
 void changeCurrentPlayer()
 {
   xValue = analogRead(joystickX); // Read the X-axis value
@@ -439,12 +454,6 @@ void changeCurrentPlayer()
     joyMoved = !joyMoved;
 }
 
-int score[3] = {EEPROM.read(4), EEPROM.read(5), EEPROM.read(6)};
-char name[3][3] = {EEPROM.read(7), EEPROM.read(8), EEPROM.read(9)};
-//int score[3] = {255, 255, 255};
-//char name[5][3] = {"NaN", "NaN", "NaN"}; 
-bool update = false; 
-
 void showHighscore(){
   //lcd.clear();
   lcd.setCursor(0,0);
@@ -473,8 +482,7 @@ void showHighscore(){
   
   changeCurrentPlayer();
 }
-int currentLetter = 0;
-char nameCurrent[3] = "AAA";
+
 void changeLetter(){
   //Serial.println(currentLetter);
   xValue = analogRead(joystickX); // Read the X-axis value
@@ -521,10 +529,6 @@ void changeLetter(){
   if(millis()-lastMove > joystickDebounce)
     joyMoved = !joyMoved;
 }
-
-const int timeBlink = 50;
-long long lastBlink;
-int stateBlink = true;
 
 void blinkLetter(){
   if(millis() - lastBlink > timeBlink || !lastBlink){

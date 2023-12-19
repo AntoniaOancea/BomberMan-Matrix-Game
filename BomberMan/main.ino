@@ -107,13 +107,10 @@ void setup() {
   brightMatrix = EEPROM.read(0);
   brightLCD = EEPROM.read(1);
   soundState = EEPROM.read(2);
-  //Serial.println(brightMatrix);
-  //Serial.println(brightLCD);
 
   // the zero refers to the MAX7219 number, it is zero for 1 chip
   lc.shutdown(0, false); // turn off power saving, enables display
-  //lc.setIntensity(0, (brightMatrix+1)*5); // sets brightness (0~15 possible values)
-  lc.setIntensity(0, 15);
+  lc.setIntensity(0, (brightMatrix+1)*5); // sets brightness (0~15 possible values)
   lc.clearDisplay(0);// clear screen
 
   // initialize random seed
@@ -266,7 +263,7 @@ void showMatrix(){
       return;
     }
 
-  //show walls
+  //show objects
   wallsRemain = 0; 
   for(int i = 0; i < numRows; i++)
     for(int j = 0; j < numCols; j++){
